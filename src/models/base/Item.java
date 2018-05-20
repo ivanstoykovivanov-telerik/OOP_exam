@@ -1,26 +1,12 @@
 package models.base;
 
-public class Item implements IValidateItem  {
+public class Item implements Comparable<Item>  {
 	private String title ; 
 	private String description ;
 	
-
 	public Item(String title, String description) {
-		super();
-		this.title = title;
-		this.description = description;
-	}
-
-	@Override
-	public boolean validateTitle(String title) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean validateDescription(String description) {
-		// TODO Auto-generated method stub
-		return false;
+			this.title = title;
+			this.description = description;
 	}
 
 	public String getTitle() {
@@ -37,10 +23,12 @@ public class Item implements IValidateItem  {
 
 	public void setDescription(String description) {
 		this.description = description;
-	} 
-	
-	
-	
-	
+	}
+
+	@Override
+	public int compareTo(Item item) {
+        int firstCmp = this.getTitle().compareTo(item.getTitle());
+        return firstCmp != 0 ? firstCmp :  this.getDescription().compareTo(item.getDescription());
+    }
 	
 }

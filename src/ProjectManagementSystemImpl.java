@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -6,25 +7,33 @@ import java.util.regex.Pattern;
 import base.ProjectManagementSystem;
 import models.TicketPriority;
 import models.TodoState;
-import models.base.IValidateItem;
+import models.base.Data;
+import models.base.IData;
 import models.base.Item;
 import models.base.Task;
 import models.base.Ticket;
 import models.base.Todo;
 
-public class ProjectManagementSystemImpl implements ProjectManagementSystem, IValidateItem {
+public class ProjectManagementSystemImpl implements ProjectManagementSystem {
 	private List<Item> todos ; 
 	private List<Item> tickets ;
 	private List<Item> tasks ;
-	//private List<Item> all;  // ??? 
+	private IData data; 
 	
+	public ProjectManagementSystemImpl() {
+		super();
+		this.todos = new ArrayList<>();
+		this.tickets = new ArrayList<>();
+		this.tasks = new ArrayList<>();
+		this.data = new Data();
+	}
+
 	@Override
 	public void addTicket(String title, String description, Date dueDate, TicketPriority priority, String sender,
 			String owner) {
 		//
 		Item ticket = new Ticket(title, description, dueDate, priority, sender, owner); 
 		tickets.add(ticket); 
-		
 	}
 
 	@Override
@@ -58,12 +67,19 @@ public class ProjectManagementSystemImpl implements ProjectManagementSystem, IVa
 
 	@Override
 	public List<Item> listTickets() {
-		return getTickets(); 	
+		List<Item> tickets = new ArrayList<>(); 
+		tickets = getTickets(); 
+		Collections.sort(tickets);		
+		return tickets; 	
 	}
 
 	@Override
 	public List<Item> listTodos() {
-		return getTodos(); 
+		List<Item> todos = new ArrayList<>(); 
+		todos = getTodos(); 
+		//Sorting: 
+		Collections.sort(todos);		
+		return todos; 	
 	}
 
 	@Override
@@ -81,7 +97,11 @@ public class ProjectManagementSystemImpl implements ProjectManagementSystem, IVa
 
 	@Override
 	public List<Item> listTasks() {
-		return getTasks(); 
+		List<Item> tasks = new ArrayList<>(); 
+		tasks = getTasks(); 
+		//Sorting: 
+		Collections.sort(tasks);		
+		return tasks; 
 	}
 
 	@Override
@@ -90,20 +110,24 @@ public class ProjectManagementSystemImpl implements ProjectManagementSystem, IVa
 		List<Item> found = new ArrayList<>();  
 		
 		for (Item item : all) {
-			// TODO validate title and description 
 			if(	Pattern.compile(Pattern.quote(pattern), Pattern.CASE_INSENSITIVE).matcher(item.getTitle()).find() || 
-				Pattern.compile(Pattern.quote(pattern), Pattern.CASE_INSENSITIVE).matcher(item.getDescription()).find()) {
+						Pattern.compile(Pattern.quote(pattern), Pattern.CASE_INSENSITIVE).matcher(item.getDescription()).find()){
+				found.add(item); 
 			}
 		}
 		return found;
 	}
 
 	@Override
-	public void changeTodoState(Todo todo) {
-		// TODO Auto-generated method stubs
-		
-		//if(todo.getState() == )
-		
+	public void changeTodoState(String todoTitle) {
+		Todo searchedTodo = new Todo("", "", TodoState.NOT_DONE); 
+		for (Item item : todos) {
+			Todo todo = (Todo) item ; 
+			if(todo.getTitle().equals(todoTitle)) {
+				searchedTodo = todo ; 
+			}
+		}
+		searchedTodo.setState(TodoState.DONE);
 	}
 
 	public List<Item> getTodos() {
@@ -117,17 +141,4 @@ public class ProjectManagementSystemImpl implements ProjectManagementSystem, IVa
 	public List<Item> getTasks() {
 		return tasks;
 	}
-
-	@Override
-	public boolean validateTitle(String title) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean validateDescription(String description) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 }

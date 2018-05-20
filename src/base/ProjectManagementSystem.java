@@ -3,6 +3,7 @@ package base;
 import models.TicketPriority;
 import models.TodoState;
 import models.base.Item;
+import models.base.Task;
 import models.base.Todo;
 
 import java.util.Date;
@@ -28,5 +29,5 @@ public interface ProjectManagementSystem {
 
     List<Item> searchByTitleOrDescription(String pattern);
 
-    void changeTodoState(Todo todo );
+	void changeTodoState(String todoTitle);
 }

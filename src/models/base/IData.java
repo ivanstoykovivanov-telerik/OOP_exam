@@ -1,5 +1,7 @@
 package models.base;
 
-public interface IData {
+import base.ProjectManagementSystem;
+
+public interface IData     {
 	
 }

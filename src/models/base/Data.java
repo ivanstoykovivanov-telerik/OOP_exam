@@ -8,7 +8,6 @@ public class Data implements IData {
 	private List<Item> tickets ;
 	private List<Item> tasks ;
 	
-	
 	public Data() {
 		super();
 		this.todos = new ArrayList<>();
@@ -17,10 +16,20 @@ public class Data implements IData {
 	}
 	
 	
-	
-	
-	
-	
+	public void setTodos(List<Item> todos) {
+		this.todos = todos;
+	}
+
+
+	public void setTickets(List<Item> tickets) {
+		this.tickets = tickets;
+	}
+
+	public void setTasks(List<Item> tasks) {
+		this.tasks = tasks;
+	}
+
+
 	public List<Item> getTodos() {
 		return todos;
 	}
@@ -32,13 +41,5 @@ public class Data implements IData {
 	public List<Item> getTasks() {
 		return tasks;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }
